@@ -11,7 +11,7 @@ ___
 
 Бот переодически улучшается и обновляется, поэтому может быть отключен в некоторый период времени. По всем вопросом обращаться в телеграмм или письмом на e-mail в описание профиля. 
 
-![1](https://user-images.githubusercontent.com/114734775/209709643-f3eb16a8-8294-4eec-83cc-aa1bdf74c407.jpg) ![2](https://user-images.githubusercontent.com/114734775/209709699-1b102259-daa7-46cb-9831-125d47aa161e.jpg) ![3](https://user-images.githubusercontent.com/114734775/209709720-01e77b2a-9a1c-45fc-a02e-a5da4fa220cf.jpg)
+![1](https://user-images.githubusercontent.com/114734775/209709643-f3eb16a8-8294-4eec-83cc-aa1bdf74c407.jpg) ![2](https://user-images.githubusercontent.com/114734775/209709699-1b102259-daa7-46cb-9831-125d47aa161e.jpg) ![3](https://user-images.githubusercontent.com/114734775/209714767-c8ef2a11-891f-43ed-ae82-958540478ce7.jpg)
 
 
 ___
