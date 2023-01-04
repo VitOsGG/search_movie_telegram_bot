@@ -15,7 +15,8 @@ from aiogram.dispatcher.filters import Text
 
 async def command_start(message: types.Message):
     try:
-        await bot.send_message(message.from_user.id, "Привет!\nНаконец-то у тебя появилось время для фильма))\nКак будем выбирать?", reply_markup=kb_user)
+        await bot.send_message(message.from_user.id, "Привет!\nНаконец-то у тебя появилось время для фильма))\n"
+                                                     "Как будем выбирать?", reply_markup=kb_user)
         await message.delete()
     except:
         await message.reply('Могу подобрать фильм на вечер! Напиши боту в ЛС: \nhttps://t.me/Movie_for_Mommy_bot')
@@ -23,14 +24,14 @@ async def command_start(message: types.Message):
 
 """"БЛОК ПОДБОРА ФИЛЬМА ПО КРИТЕРИЮ ЭМОЦИЙ"""
 
-emotion = InlineKeyboardMarkup(row_width=3).add(InlineKeyboardButton(text='Радость', callback_data='movie_hpp'),\
-                                                InlineKeyboardButton(text='Гнев', callback_data='movie_ang'), \
-                                                InlineKeyboardButton(text='Восторг', callback_data='movie_del'), \
-                                                InlineKeyboardButton(text='Любопытство', callback_data='movie_cur'), \
-                                                InlineKeyboardButton(text='Страх', callback_data='movie_fea'), \
-                                                InlineKeyboardButton(text='Грусть', callback_data='movie_sad'))
+emotion = InlineKeyboardMarkup(row_width=3).add(InlineKeyboardButton(text='😊 Радость', callback_data='movie_hpp'),\
+                                                InlineKeyboardButton(text='🤬 Гнев', callback_data='movie_ang'), \
+                                                InlineKeyboardButton(text='🤩 Восторг', callback_data='movie_del'), \
+                                                InlineKeyboardButton(text='😲 Любопытство', callback_data='movie_cur'), \
+                                                InlineKeyboardButton(text='😱 Страх', callback_data='movie_fea'), \
+                                                InlineKeyboardButton(text='🙁 Грусть', callback_data='movie_sad'))
 
-
+@dp.message_handler(Text(equals="🌝 Эмоция"))
 async def movie_choice_by_mood(message: types.Message):
     await bot.send_message(message.from_user.id, 'Итак, подберем фильм по эмоциям!')
     await message.answer('Выбирай:', reply_markup=emotion)
@@ -84,10 +85,10 @@ genre = InlineKeyboardMarkup(row_width=3).add(InlineKeyboardButton(text='Ани�
                                                 InlineKeyboardButton(text='Мелодрама', callback_data='movie_mel'), \
                                                 InlineKeyboardButton(text='Остальные', callback_data='movie_oth_gen'))
 
-# @dp.message_handler(commands=['По_жанру'])
+@dp.message_handler(Text(equals="🎬 Жанр"))
 async def movie_choice_by_genre(message: types.Message):
     await bot.send_message(message.from_user.id,
-                           'Комедия, триллер или документалка о национальных игрушка народов Исландии?')
+                           'Комедия, триллер или поплачем над мелодрамой?')
     await message.answer('Выбирай:', reply_markup=genre)
 @dp.callback_query_handler(Text(startswith='movie_ani'))
 async def movie_choice_by_genre_ani(callback: types.CallbackQuery):
@@ -153,19 +154,19 @@ async def movie_choice_by_genre_oth_gen(callback: types.CallbackQuery):
 """БЛОК ПОДБОРА ФИЛЬМОВ ПО КРИТЕРИЮ СТРАНЫ"""
 
 
-country = InlineKeyboardMarkup(row_width=3).add(InlineKeyboardButton(text='Россия', callback_data='movie_rus'), \
-                                                InlineKeyboardButton(text='США', callback_data='movie_usa'), \
-                                                InlineKeyboardButton(text='Корея', callback_data='movie_kor'), \
-                                                InlineKeyboardButton(text='Великобритания', callback_data='movie_eng'), \
-                                                InlineKeyboardButton(text='Франция', callback_data='movie_fre'), \
-                                                InlineKeyboardButton(text='Германия', callback_data='movie_ger'), \
-                                                InlineKeyboardButton(text='Япония', callback_data='movie_jap'), \
+country = InlineKeyboardMarkup(row_width=3).add(InlineKeyboardButton(text='🇷🇺 Россия', callback_data='movie_rus'), \
+                                                InlineKeyboardButton(text='🇺🇸 США', callback_data='movie_usa'), \
+                                                InlineKeyboardButton(text='🇰🇷 Корея', callback_data='movie_kor'), \
+                                                InlineKeyboardButton(text='🇬🇧 Великобритания', callback_data='movie_eng'), \
+                                                InlineKeyboardButton(text='🇫🇷 Франция', callback_data='movie_fre'), \
+                                                InlineKeyboardButton(text='🇩🇪 Германия', callback_data='movie_ger'), \
+                                                InlineKeyboardButton(text='🇯🇵 Япония', callback_data='movie_jap'), \
                                                 InlineKeyboardButton(text='СССР', callback_data='movie_uss'), \
-                                                InlineKeyboardButton(text='Италия', callback_data='movie_itl'), \
-                                                InlineKeyboardButton(text='Остальные', callback_data='movie_oth_cnt'))
+                                                InlineKeyboardButton(text='🇮🇹 Италия', callback_data='movie_itl'), \
+                                                InlineKeyboardButton(text='🇦🇶 Остальные', callback_data='movie_oth_cnt'))
 
 
-
+@dp.message_handler(Text(equals="🌎 Страна"))
 async def movie_choice_by_country(message: types.Message):
     await bot.send_message(message.from_user.id,
                            'Старое доброе русское, шикарное американское или модное корейское кино?')
@@ -222,11 +223,11 @@ async def movie_choice_by_country_oth_cnt(callback: types.CallbackQuery):
     await callback.answer()
 
 
-
+@dp.message_handler(Text(equals="🎞 Хочу совет!"))
 async def movie_choice_by_rec(message: types.Message):
     await sqlit_db.sql_read_movie_rec(message)
 
-
+@dp.message_handler(Text(equals="🗿 Интересный факт^^"))
 async def interesting_fact(message: types.Message):
     await sqlit_db_fct.sql_start_int_fact_bd(message)
 
@@ -234,39 +235,39 @@ async def interesting_fact(message: types.Message):
 def register_handlers_user(dp: Dispatcher):
     dp.register_message_handler(command_start, commands=['start', 'help', 'Start', 'Help'])
 
-    dp.register_message_handler(movie_choice_by_mood, commands=['По_эмоциям'])
-    dp.register_message_handler(movie_choice_by_mood_hpp, commands=['Радость'])
-    dp.register_message_handler(movie_choice_by_mood_ang, commands=['Гнев'])
-    dp.register_message_handler(movie_choice_by_mood_del, commands=['Восторг'])
-    dp.register_message_handler(movie_choice_by_mood_cur, commands=['Любопытство'])
-    dp.register_message_handler(movie_choice_by_mood_fea, commands=['Страх'])
-    dp.register_message_handler(movie_choice_by_mood_sad, commands=['Грусть'])
+    # dp.register_message_handler(movie_choice_by_mood, commands=['По_эмоциям'])
+    # dp.register_message_handler(movie_choice_by_mood_hpp, commands=['Радость'])
+    # dp.register_message_handler(movie_choice_by_mood_ang, commands=['Гнев'])
+    # dp.register_message_handler(movie_choice_by_mood_del, commands=['Восторг'])
+    # dp.register_message_handler(movie_choice_by_mood_cur, commands=['Любопытство'])
+    # dp.register_message_handler(movie_choice_by_mood_fea, commands=['Страх'])
+    # dp.register_message_handler(movie_choice_by_mood_sad, commands=['Грусть'])
 
-    dp.register_message_handler(movie_choice_by_genre, commands=['По_жанру'])
-    dp.register_message_handler(movie_choice_by_genre_ani, commands=['Аниме'])
-    dp.register_message_handler(movie_choice_by_genre_bio, commands=['Биография'])
-    dp.register_message_handler(movie_choice_by_genre_dra, commands=['Драма'])
-    dp.register_message_handler(movie_choice_by_genre_act, commands=['Боевик'])
-    dp.register_message_handler(movie_choice_by_genre_com, commands=['Комедия'])
-    dp.register_message_handler(movie_choice_by_genre_thr, commands=['Триллер'])
-    dp.register_message_handler(movie_choice_by_genre_cri, commands=['Криминал'])
-    dp.register_message_handler(movie_choice_by_genre_fan, commands=['Фэнтези'])
-    dp.register_message_handler(movie_choice_by_genre_car, commands=['Анимация'])
-    dp.register_message_handler(movie_choice_by_genre_fic, commands=['Фантастика'])
-    dp.register_message_handler(movie_choice_by_genre_mel, commands=['Мелодрама'])
-    dp.register_message_handler(movie_choice_by_genre_oth_gen, commands=['Остальные'])
+    # dp.register_message_handler(movie_choice_by_genre, commands=['По_жанру'])
+    # dp.register_message_handler(movie_choice_by_genre_ani, commands=['Аниме'])
+    # dp.register_message_handler(movie_choice_by_genre_bio, commands=['Биография'])
+    # dp.register_message_handler(movie_choice_by_genre_dra, commands=['Драма'])
+    # dp.register_message_handler(movie_choice_by_genre_act, commands=['Боевик'])
+    # dp.register_message_handler(movie_choice_by_genre_com, commands=['Комедия'])
+    # dp.register_message_handler(movie_choice_by_genre_thr, commands=['Триллер'])
+    # dp.register_message_handler(movie_choice_by_genre_cri, commands=['Криминал'])
+    # dp.register_message_handler(movie_choice_by_genre_fan, commands=['Фэнтези'])
+    # dp.register_message_handler(movie_choice_by_genre_car, commands=['Анимация'])
+    # dp.register_message_handler(movie_choice_by_genre_fic, commands=['Фантастика'])
+    # dp.register_message_handler(movie_choice_by_genre_mel, commands=['Мелодрама'])
+    # dp.register_message_handler(movie_choice_by_genre_oth_gen, commands=['Остальные'])
 
-    dp.register_message_handler(movie_choice_by_country, commands=['По_странам'])
-    dp.register_message_handler(movie_choice_by_country_rus, commands=['Россия'])
-    dp.register_message_handler(movie_choice_by_country_usa, commands=['США'])
-    dp.register_message_handler(movie_choice_by_country_kor, commands=['Корея'])
-    dp.register_message_handler(movie_choice_by_country_eng, commands=['Великобритания'])
-    dp.register_message_handler(movie_choice_by_country_fre, commands=['Франция'])
-    dp.register_message_handler(movie_choice_by_country_ger, commands=['Германия'])
-    dp.register_message_handler(movie_choice_by_country_jap, commands=['Япония'])
-    dp.register_message_handler(movie_choice_by_country_uss, commands=['СССР'])
-    dp.register_message_handler(movie_choice_by_country_oth_cnt, commands=['Остальные'])
+    # dp.register_message_handler(movie_choice_by_country, commands=['По_странам'])
+    # dp.register_message_handler(movie_choice_by_country_rus, commands=['Россия'])
+    # dp.register_message_handler(movie_choice_by_country_usa, commands=['США'])
+    # dp.register_message_handler(movie_choice_by_country_kor, commands=['Корея'])
+    # dp.register_message_handler(movie_choice_by_country_eng, commands=['Великобритания'])
+    # dp.register_message_handler(movie_choice_by_country_fre, commands=['Франция'])
+    # dp.register_message_handler(movie_choice_by_country_ger, commands=['Германия'])
+    # dp.register_message_handler(movie_choice_by_country_jap, commands=['Япония'])
+    # dp.register_message_handler(movie_choice_by_country_uss, commands=['СССР'])
+    # dp.register_message_handler(movie_choice_by_country_oth_cnt, commands=['Остальные'])
 
-    dp.register_message_handler(movie_choice_by_rec, commands=['Хочу_совет!'])
+    # dp.register_message_handler(movie_choice_by_rec, commands=['Хочу_совет!'])
 
-    dp.register_message_handler(interesting_fact, commands=['Интересный_факт^^'])
+    # dp.register_message_handler(interesting_fact, commands=['Интересный_факт^^'])
