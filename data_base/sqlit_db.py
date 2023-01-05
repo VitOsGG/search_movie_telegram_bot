@@ -171,12 +171,6 @@ async def sql_read_movie_usa(message):
                              f'{ret[1]}\n {ret[2]}\n {ret[3]}\n {ret[4]}\n {ret[-1]}')
 
 
-async def sql_read_movie_kor(message):
-    for ret in cur.execute(sql_coun, ("%" + 'Корея' + "%",)).fetchall():
-        await bot.send_photo(message.from_user.id, ret[0],
-                             f'{ret[1]}\n {ret[2]}\n {ret[3]}\n {ret[4]}\n {ret[-1]}')
-
-
 async def sql_read_movie_eng(message):
     for ret in cur.execute(sql_coun, ("%" + 'Великобритания' + "%",)).fetchall():
         await bot.send_photo(message.from_user.id, ret[0],
@@ -207,16 +201,11 @@ async def sql_read_movie_uss(message):
                              f'{ret[1]}\n {ret[2]}\n {ret[3]}\n {ret[4]}\n {ret[-1]}')
 
 
-async def sql_read_movie_itl(message):
-    for ret in cur.execute(sql_coun, ("%" + 'Италия' + "%",)).fetchall():
-        await bot.send_photo(message.from_user.id, ret[0],
-                             f'{ret[1]}\n {ret[2]}\n {ret[3]}\n {ret[4]}\n {ret[-1]}')
-
 
 async def sql_read_movie_oth_cnt(message):
     for ret in cur.execute('SELECT img, name, rating, country, genre, description FROM movie_db_on_mood_tab  WHERE '
                            'country <> '
-                           '"Россия" AND country <> "США" AND country <> "Корея" AND country <> "Великобритания" AND '
+                           '"Россия" AND country <> "США" AND country <> "Великобритания" AND '
                            'country <> '
                            '"Франция" AND country <> "Германия"  AND country <> "Япония" AND country <> "СССР" '
                            'ORDER BY RANDOM() LIMIT 1 ').fetchall():
