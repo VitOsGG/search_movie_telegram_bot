@@ -11,5 +11,7 @@ def sql_start_int_bd():
 
 
 async def sql_start_int_fact_bd(message):
-    for fct in cur.execute('SELECT fact FROM inter_movie_fact_2 ORDER BY RANDOM() LIMIT 1').fetchall():
+    for fct in cur.execute('SELECT fact FROM inter_movie_fact_2 WHERE rowid > (ABS(RANDOM()) % (SELECT max(rowid)\
+                        FROM movie_db_on_mood_tab)) \
+                        LIMIT 1').fetchall():
         await bot.send_message(message.from_user.id, fct[0])
