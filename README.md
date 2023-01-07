@@ -92,28 +92,30 @@ ___
 ```
 
   -Пакет keyboards. Кнопки главного меню:
+  (При доработки проекта улучший визуал кнопок)
   
 ```python
-b1 = KeyboardButton('/По_эмоциям')
-b2 = KeyboardButton('/По_жанру')
-b3 = KeyboardButton('/По_странам')
-b4 = KeyboardButton('/Хочу_совет!')
-b5 = KeyboardButton('/Интересный_факт^^')
+b1 = types.KeyboardButton(text='🌝 Эмоция')
+b2 = types.KeyboardButton(text='🎬 Жанр')
+b3 = types.KeyboardButton(text='🌎 Страна')
+b4 = types.KeyboardButton(text='🎞 Хочу совет!')
+b5 = types.KeyboardButton(text='🗿 Интересный факт^^')
 
-kb_user = ReplyKeyboardMarkup(resize_keyboard=True)
+kb_user = types.ReplyKeyboardMarkup(resize_keyboard=True)
 
 kb_user.row(b1, b2).add(b3).add(b4).add(b5)
 ```
   
   -Пакет handlers. Inline-кнопки после ответа на команду ('/По_эмоциям'):
+   (При доработки проекта улучший визуал кнопок)
   
 ```python
-emotion = InlineKeyboardMarkup(row_width=3).add(InlineKeyboardButton(text='Радость', callback_data='movie_hpp'),\
-                                                InlineKeyboardButton(text='Гнев', callback_data='movie_ang'), \
-                                                InlineKeyboardButton(text='Восторг', callback_data='movie_del'), \
-                                                InlineKeyboardButton(text='Любопытство', callback_data='movie_cur'), \
-                                                InlineKeyboardButton(text='Страх', callback_data='movie_fea'), \
-                                                InlineKeyboardButton(text='Грусть', callback_data='movie_sad'))
+emotion = InlineKeyboardMarkup(row_width=2).add(InlineKeyboardButton(text='😊 Радость', callback_data='movie_hpp'),\
+                                                InlineKeyboardButton(text='🤬 Гнев', callback_data='movie_ang'), \
+                                                InlineKeyboardButton(text='🤩 Восторг', callback_data='movie_del'), \
+                                                InlineKeyboardButton(text='😲 Любопытство', callback_data='movie_cur'), \
+                                                InlineKeyboardButton(text='😱 Страх', callback_data='movie_fea'), \
+                                                InlineKeyboardButton(text='🙁 Грусть', callback_data='movie_sad'))
 ```
 
  -Пакет handlers. Вывод Inline-кнопок после ответа на команду ('/По_эмоциям'):
@@ -132,27 +134,22 @@ async def movie_choice_by_mood_hpp(callback: types.CallbackQuery):
     await callback.answer()
 ```
 -Пакет data_base. SQL-запрос в БД на получения фильма по критерию Inline-кнопки - ('Радость'):
-
+(При доработки проекта изменил SQL-запрос. Новый SQL-запрос показал больее эффективный результат по времени выполния, почти в 10 раз, относительно предыдущего)
 ```python
 async def sql_read_movie_hpp(message):
     for ret in cur.execute('SELECT img, name, rating, country, genre, description FROM movie_db_on_mood_tab \
-                           WHERE mood == "Радость" ORDER BY RANDOM() LIMIT 1 ').fetchall():
+                        WHERE mood == "Радость" AND rowid > (ABS(RANDOM()) % (SELECT max(rowid)\
+                        FROM movie_db_on_mood_tab)) \
+                        LIMIT 1').fetchall():
         await bot.send_photo(message.from_user.id, ret[0],
                              f'{ret[1]}\n {ret[2]}\n {ret[3]}\n {ret[4]}\n {ret[-1]}')
 ```
 -Пакет handlers. Регистрация команда и передача их в бот:
+(При доработки проекта, решил записать выполнения команд при нажатии Inline-кнопок, только через декоратор, поэтому убрал регистрацию для таких кнопок)
 
 ```python
 def register_handlers_user(dp: Dispatcher):
     dp.register_message_handler(command_start, commands=['start', 'help', 'Start', 'Help'])
-
-    dp.register_message_handler(movie_choice_by_mood, commands=['По_эмоциям'])
-    dp.register_message_handler(movie_choice_by_mood_hpp, commands=['Радость'])
-    dp.register_message_handler(movie_choice_by_mood_ang, commands=['Гнев'])
-    dp.register_message_handler(movie_choice_by_mood_del, commands=['Восторг'])
-    dp.register_message_handler(movie_choice_by_mood_cur, commands=['Любопытство'])
-    dp.register_message_handler(movie_choice_by_mood_fea, commands=['Страх'])
-    dp.register_message_handler(movie_choice_by_mood_sad, commands=['Грусть'])
 ```
 По такому же принципу выполнены остальные ветви работы бота: 
 
