@@ -93,7 +93,7 @@ ___
 
   -Пакет keyboards. Кнопки главного меню:
   
-  (Изменено: улучший визуал кнопок)
+  (Изменено: улучшен визуал кнопок)
   
 ```python
 b1 = types.KeyboardButton(text='🌝 Эмоция')
@@ -109,7 +109,7 @@ kb_user.row(b1, b2).add(b3).add(b4).add(b5)
   
   -Пакет handlers. Inline-кнопки после ответа на команду ('🌝 Эмоция'):
   
-   (Изменено: улучший визуал кнопок)
+   (Изменено: улучшен визуал кнопок)
   
 ```python
 emotion = InlineKeyboardMarkup(row_width=2).add(InlineKeyboardButton(text='😊 Радость', callback_data='movie_hpp'),\
